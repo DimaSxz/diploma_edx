@@ -178,7 +178,7 @@
 
 </head>
 <body>
-   <div class="header container-fluid navbar-fixed-top">
+    <div class="header container-fluid navbar-fixed-top">
         <div class="row">
             <div class="col-xs-2 col-sm-3">
                <div class="navbar-default pull-left">
@@ -202,61 +202,55 @@
                 </a>
             </div>
         </div>
-   </div>
-   <div class="main container-fluid">
-       <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
-           <a class="navmenu-brand" href="../index.php?action=main">
+    </div>
+    <div class="main container-fluid">
+        <div class="navmenu navmenu-default navmenu-fixed-left offcanvas-sm">
+            <a class="navmenu-brand" href="../index.php?action=main">
                Модуль администрирования Open edX
-           </a>
-           <ul class="nav navmenu-nav">
-               <li>
-                   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                      <div class="panel panel-default unclicked" id="panel-default-manage-users">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                          <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed left-menu-a-main" id="manage-users-a">
-                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Управление пользователями
-                            </a>
-                          </h4>
+            </a>
+            <ul class="nav navmenu-nav">
+                <li>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default unclicked" id="panel-default-manage-users">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed left-menu-a-main" id="manage-users-a">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Управление пользователями
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <a href="../index.php?action=edit_profile">Редактировать профиль</a>
+                                </div>
+                                <div class="panel-body">
+                                    <a href="../index.php?action=search_users">Поиск пользователей</a>
+                                </div>
+                            </div>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                          <div class="panel-body">
-                            <a href="../index.php?action=edit_profile">Редактировать профиль</a>
-                          </div>
-                          <div class="panel-body">
-                            Редактировать профили пользователей
-                          </div>
-                          <div class="panel-body">
-                            Назначить права
-                          </div>
-                          <div class="panel-body">
-                            Удалить пользователя
-                          </div>
+                        <div class="panel panel-default unclicked" id="panel-default-manage-courses">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a class="collapsed left-menu-a-main" id="manage-courses-a" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> Управление курсами
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
+                                </div>
+                                <div class="panel-body">
+                                    <a href="../index.php?action=add_subject">Добавить дисциплину</a>
+                                </div>
+                                <div class="panel-body">
+                                    Назначить преподавателя
+                                </div>
+                                <div class="panel-body">
+                                    Назначить бонусы
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="panel panel-default unclicked" id="panel-default-manage-courses">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                          <h4 class="panel-title">
-                            <a class="collapsed left-menu-a-main" id="manage-courses-a" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                              <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> Управление курсами
-                            </a>
-                          </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                          <div class="panel-body">
-                            <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
-                          </div>
-                          <div class="panel-body">
-                            <a href="../index.php?action=add_subject">Добавить дисциплину</a>
-                          </div>
-                          <div class="panel-body">
-                            Назначить преподавателя
-                          </div>
-                          <div class="panel-body">
-                            Назначить бонусы
-                          </div>
-                        </div>
-                      </div>
                       <div class="panel panel-default unclicked" id="panel-default-manage-certificates">
                         <div class="panel-heading" role="tab" id="headingThree">
                           <h4 class="panel-title">
@@ -286,15 +280,15 @@
                         </div>
                       </div>
                     </div>
-               </li>
-               <li class="visible-xs-block">
-                   <a href="../index.php?action=logout" class="back-button-a">
-                       Выход
-                       <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
-                   </a>
-               </li>
+                </li>
+                <li class="visible-xs-block">
+                    <a href="../index.php?action=logout" class="back-button-a">
+                        Выход
+                        <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span>
+                    </a>
+                </li>
            </ul>
-       </div>
+        </div>
        <div class="row">
            <div class="col-xs-12 col-md-offset-3 col-md-9 col-lg-offset-3 col-lg-7">
                <div class="row">

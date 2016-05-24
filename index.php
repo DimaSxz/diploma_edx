@@ -15,7 +15,7 @@ require_once('controllers/is_auth.php');
 $action = (isset($_GET['action'])) ? $_GET['action'] : 'index';
 
 switch($action)
-{    
+{
     case "index":
         if(is_auth())
             header("Location: views/main.php");
@@ -49,6 +49,9 @@ switch($action)
         session_destroy();
     case "entry":
         header("Location: views/entry.php");
+        break;
+    case "search_users":
+        header("Location: views/search_users.php");
         break;
     default:
         echo "404 ERROR! Page not found...<br>";
