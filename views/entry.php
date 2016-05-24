@@ -82,12 +82,6 @@
                     <strong>Ошибка!</strong> Неверный логин или пароль
                 </div>
             </div>
-            <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-good" style="display: none;">
-                <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 50px;">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Успех!</strong> Регистрация успешно завершена
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4 centered center-block">
