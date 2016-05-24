@@ -1,0 +1,17 @@
+
+.main .row .panel-heading {
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.main .navmenu + .row {
+    margin-top: 40px;
+}
+
+.well > .row {
+    margin-bottom: 10px;
+}
+
+form > .row .checkbox {
+    margin-top: 28px;
+}
