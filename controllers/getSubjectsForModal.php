@@ -3,8 +3,8 @@
     require_once('../controllers/db.php');
 
     function getSubjectsForModal() {
-        $user_id = $_SESSION['user_id'];
-        $result = mysql_query("SELECT id, full_title FROM subjects JOIN user_subjects ON id = subject_id WHERE user_id = '$user_id'");
+        $user_id = $_SESSION['id'];
+        $result = mysql_query("SELECT id, full_title FROM subjects JOIN user_subjects ON id = subject_id WHERE user_id = '$user_id'") or die(mysql_error());
         $subjects = "";
         
         if (mysql_num_rows($result) > 0) {

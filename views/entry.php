@@ -38,18 +38,17 @@
                     "../controllers/auth.php",
                     {login: user_login, password: user_password},
                     function (responce) {
-//                        if (responce == "bad") {
-//                            $('#alert-check-correctness').css('display', 'none');
-//                            $('#alert-good').css('display', 'none');
-//                            $('#alert-check-login-pas').css('display','block');
-//                            $('#login_login').parents('.form-group').addClass('has-error has-feedback');
-//                            $('#login_login').next('.glyphicon-remove').css('display', 'inline');
-//                            $('#password_login').parents('.form-group').addClass('has-error has-feedback');
-//                            $('#password_login').next('.glyphicon-remove').css('display', 'inline');
-//                        } else {
-//                            $(location).attr('href','../index.php?action=lk');
-//                        }
-						console.log(responce);
+                        if (responce == "bad") {
+                            $('#alert-check-correctness').css('display', 'none');
+                            $('#alert-good').css('display', 'none');
+                            $('#alert-check-login-pas').css('display','block');
+                            $('#login_login').parents('.form-group').addClass('has-error has-feedback');
+                            $('#login_login').next('.glyphicon-remove').css('display', 'inline');
+                            $('#password_login').parents('.form-group').addClass('has-error has-feedback');
+                            $('#password_login').next('.glyphicon-remove').css('display', 'inline');
+                        } else {
+                            $(location).attr('href','../index.php?action=lk');
+                        }
                     }
                 );
             });

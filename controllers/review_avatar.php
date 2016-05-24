@@ -62,7 +62,7 @@
     
     if(isset($_FILES['avatar']) && !in_blacklist($_FILES['avatar']['name']) && checkType($_FILES['avatar']['type']) && checkSize($_FILES['avatar']['size']))
     {
-        $upload_dir="../images/users/".$_SESSION['user_id'].'/';
+        $upload_dir="../images/users/".$_SESSION['id'].'/';
         if(!is_dir($upload_dir)) mkdir_r($upload_dir, 0777);
         $_FILES['avatar']['name'] = translate($_FILES['avatar']['name']);
         if(move_uploaded_file($_FILES['avatar']['tmp_name'], $upload_dir.$_FILES['avatar']['name'])){

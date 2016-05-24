@@ -11,7 +11,7 @@
     
     $fio=explode(" ", $_SESSION['name']);
 
-    $query = mysql_query("SELECT `crop`,`angle` FROM `auth_userprofile` WHERE `user_id` = '$_SESSION[user_id]'") or die(mysql_error());
+    $query = mysql_query("SELECT `crop`,`angle` FROM `auth_userprofile` WHERE `user_id` = '$_SESSION[id]'") or die(mysql_error());
     $select = mysql_fetch_assoc($query);
     if($select['crop'])
         $crop=explode(" ", $select['crop']);

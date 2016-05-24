@@ -9,9 +9,9 @@
     }
 
     function getAllSubjects() {
-        $user_id = $_SESSION['user_id'];
+        $user_id = $_SESSION['id'];
         $result_from_db = mysql_query("SELECT id, full_title FROM subjects 
-                                                            WHERE id NOT IN (SELECT subject_id FROM user_subjects WHERE user_id = '$user_id')");
+                                                            WHERE id NOT IN (SELECT subject_id FROM user_subjects WHERE user_id = '$user_id')") or die(mysql_error());
         $options_str = "";    
 
         while ($options = mysql_fetch_assoc($result_from_db)) {
@@ -22,8 +22,8 @@
     }                       
 
     function getSelectedSubjects() {
-        $user_id = $_SESSION['user_id'];
-        $result_from_db = mysql_query("SELECT id, full_title FROM user_subjects JOIN subjects ON subject_id = id WHERE user_id = '$user_id'");
+        $user_id = $_SESSION['id'];
+        $result_from_db = mysql_query("SELECT id, full_title FROM user_subjects JOIN subjects ON subject_id = id WHERE user_id = '$user_id'") or die(mysql_error());
         $options_str = "";    
 
         while ($options = mysql_fetch_assoc($result_from_db)) {

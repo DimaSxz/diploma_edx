@@ -20,7 +20,7 @@
             $answers['login'] = 'regular_error';
             return;
         } else {
-            $result_login = mysql_fetch_assoc(mysql_query("SELECT username FROM auth_user WHERE username = '$login'"));
+            $result_login = mysql_fetch_assoc(mysql_query("SELECT username FROM auth_user WHERE username = '$login'") or die(mysql_error()));
             if ($login == $result_login['username']) {    
                 $answers['login'] = 'login_exists';
                 return;

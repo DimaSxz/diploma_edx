@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once('db.php');
-    $result = mysql_query("SELECT * FROM (SELECT id, title, description FROM courses WHERE user_id = '$_SESSION[user_id]' ORDER BY id DESC LIMIT 3) AS last_courses");
+    $result = mysql_query("SELECT * FROM (SELECT id, title, description FROM courses WHERE user_id = '$_SESSION[id]' ORDER BY id DESC LIMIT 3) AS last_courses") or die(mysql_error());
     $last_courses_str = "";
     $i = 1;
             

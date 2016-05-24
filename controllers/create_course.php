@@ -40,7 +40,7 @@
     inspectDescription($answers, $description);
 
     if ($answers['course_title'] == 'all_good' && $answers['subject'] == 'all_good' && $answers['description'] == 'all_good') {
-        mysql_query("INSERT INTO courses(user_id, title, start_date, end_date, subject_id, description) VALUES('$_SESSION[user_id]', '$course_title', '$start_date', '$end_date', '$subject', '$description')");
+        mysql_query("INSERT INTO courses(user_id, title, start_date, end_date, subject_id, description) VALUES('$_SESSION[user_id]', '$course_title', '$start_date', '$end_date', '$subject', '$description')") or die(mysql_error());
     }
 
     echo json_encode($answers);

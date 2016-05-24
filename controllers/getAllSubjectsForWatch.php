@@ -1,7 +1,7 @@
 <?php
 function getAllSubjects() {
         require_once('../controllers/db.php');
-        $result = mysql_query("SELECT id, title, description, (SELECT short_title FROM subjects WHERE id = subject_id) AS short_title FROM courses ORDER BY id DESC");
+        $result = mysql_query("SELECT id, title, description, (SELECT short_title FROM subjects WHERE id = subject_id) AS short_title FROM courses ORDER BY id DESC") or die(mysql_error());
         $subjects = "";
         
         if (mysql_num_rows($result) > 0) {
