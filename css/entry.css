@@ -1,7 +1,6 @@
-
 .centered {
     position: fixed;
-    top: 50%;
+    top: 370px;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
         -moz-transform: translate(-50%, -50%);
@@ -15,11 +14,9 @@
 }
 
 .form-content {
-    padding: 15px 15px 0px 15px;
-    border-bottom: 1px solid rgb(221,221,221);
-    border-left: 1px solid rgb(221,221,221);
-    border-right: 1px solid rgb(221,221,221);
-    border-radius: 0 0 4px 4px;
+    padding: 30px 20px 10px 20px;
+    border: 1px solid rgb(221,221,221);
+    border-radius: 5px;
 }
 
 .form-control {
@@ -28,7 +25,7 @@
 
 .exit {
     display: inline-block;
-    
+
 }
 
 .header {
@@ -42,15 +39,20 @@
     width: auto;
 }
 
-.form-content .tab-pane > .form-group{
+.form-content .tab-pane > .form-group {
     margin: 0 !IMPORTANT;
 }
 
-.form-group button{
+.form-group button {
     margin: 7px auto;
 }
 
 .full-name {
     display: inline-block;
     padding-right: 15px;
+}
+
+.entry-logo-wrapper,
+.notifies {
+    padding: 20px 0;
 }

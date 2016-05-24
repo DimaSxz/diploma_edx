@@ -64,34 +64,33 @@
 </head>
 <body>
     <div class="container">
-       <div class="row">
-          <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-check-correctness" style="display: none;">
-              <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 50px;">
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                   <strong>Ошибка!</strong> Проверьте корректность ввода данных
-              </div>
-          </div>
-          <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-check-login-pas" style="display: none;">
-              <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 50px;">
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                   <strong>Ошибка!</strong> Неверный логин или пароль
-              </div>
-          </div>
-          <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-good" style="display: none;">
-             <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 50px;">
-                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                   <strong>Успех!</strong> Регистрация успешно завершена
-              </div>
-          </div>
-       </div>
+        <div class="row entry-logo-wrapper">
+            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+                <img src="../images/entry-logo.png" alt="Логотип ИТМО" width="100%"/>
+            </div>
+        </div>
+        <div class="row notifies">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-check-correctness" style="display: none;">
+                <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 50px;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Ошибка!</strong> Проверьте корректность ввода данных
+                </div>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-check-login-pas" style="display: none;">
+                <div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 50px;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Ошибка!</strong> Неверный логин или пароль
+                </div>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="alert-good" style="display: none;">
+                <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 50px;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Успех!</strong> Регистрация успешно завершена
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4 centered center-block">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active">
-                        <a href="#login" data-toggle="tab" aria-hidden="true">Вход</a>
-                    </li>
-                </ul>
-
                 <div class="tab-content form-content">
                     <div id="login" class="tab-pane fade in active">
                         <form action="../controllers/auth.php" class="form-horizontal" method="post">
