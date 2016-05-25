@@ -31,9 +31,11 @@
 
     <script>
         $(function() {
-            if("<?=$_SESSION["is_superuser"]?>" == "1") {
-                $(".user-wrapper .edit-permissions").show();
-            }
+            var userID;
+
+            $(".user-wrapper .user-full-name h2").text("<?=$_SESSION['name']?>");
+            $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label'></span>");
+            $(".user-wrapper .permissions-label").text(setUserPermByFlags("<?=$_SESSION['is_staff']?>", "<?=$_SESSION['is_superuser']?>"));
 
             $(".main.container-fluid .row").css("opacity","0");
             $(".main.container-fluid .row").animate({opacity: "1"}, 555);
@@ -113,6 +115,9 @@
             //вывод информации о выбранном пользователе
             $(".search-wrapper .names-wrapper").on("click", "p:not(.title)", function() {
                 userID = ($(this).children(".link-user").attr("id")).split("-")[2];
+                if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>") {
+                    $(".user-wrapper .edit-permissions").show();
+                }
                 var userPermNum; //номер прав пользователя
                 if ($(this).children(".link-user").hasClass("link-student")) {
                     userPerm = setUserPerm(1);
@@ -125,9 +130,8 @@
                     userPermNum = "3";
                 }
                 var fullName = $(this).children(".link-user").text();
-                $(".user-wrapper").show();
                 $(".user-wrapper .user-full-name h2").text(fullName);
-                $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label'></span>");
+                $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label label-" + userID + "'></span>");
                 $(".user-wrapper .permissions-label").text(userPerm);
                 $("#edit-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
             });
@@ -166,6 +170,16 @@
                 case 3:
                   return "администратор";
               }
+            }
+
+            function setUserPermByFlags(is_staff, is_superuser) {
+                if (is_staff == "0" && is_superuser == "0") {
+                    return setUserPerm(1);
+                } else if (is_staff == "1") {
+                    return setUserPerm(2);
+                } else {
+                    return setUserPerm(3);
+                }
             }
 
         });
