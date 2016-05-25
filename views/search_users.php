@@ -31,6 +31,10 @@
 
     <script>
         $(function() {
+            if("<?=$_SESSION["is_superuser"]?>" == "1") {
+                $(".user-wrapper .edit-permissions").show();
+            }
+
             $(".main.container-fluid .row").css("opacity","0");
             $(".main.container-fluid .row").animate({opacity: "1"}, 555);
 
@@ -108,37 +112,36 @@
 
             //вывод информации о выбранном пользователе
             $(".search-wrapper .names-wrapper").on("click", "p:not(.title)", function() {
-              userID = ($(this).children(".link-user").attr("id")).split("-")[2];
-              var userPermNum; //номер прав пользователя
-              if ($(this).children(".link-user").hasClass("link-student")) {
-                userPerm = setUserPerm(1);
-                userPermNum = "1";
-              } else if ($(this).children(".link-user").hasClass("link-staff")) {
-                userPerm = setUserPerm(2);
-                userPermNum = "2";
-              } else {
-                userPerm = setUserPerm(3);
-                userPermNum = "3";
-              }
-              var fullName = $(this).children(".link-user").text();
-              $(".user-wrapper").show();
-              $(".user-wrapper .user-full-name h2").text(fullName);
-              $(".user-wrapper .permissions-label-bs").text(userPerm);
-              $(".simple-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
+                userID = ($(this).children(".link-user").attr("id")).split("-")[2];
+                var userPermNum; //номер прав пользователя
+                if ($(this).children(".link-user").hasClass("link-student")) {
+                    userPerm = setUserPerm(1);
+                    userPermNum = "1";
+                } else if ($(this).children(".link-user").hasClass("link-staff")) {
+                    userPerm = setUserPerm(2);
+                    userPermNum = "2";
+                } else {
+                    userPerm = setUserPerm(3);
+                    userPermNum = "3";
+                }
+                var fullName = $(this).children(".link-user").text();
+                $(".user-wrapper").show();
+                $(".user-wrapper .user-full-name h2").text(fullName);
+                $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label'></span>");
+                $(".user-wrapper .permissions-label").text(userPerm);
+                $("#edit-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
             });
 
-            $(".user-wrapper .edit-permissions").on("click", function() {
-                event.preventDefault();
-                $(".simple-modal + .overlay").fadeIn(400, function() {
-                    $(".simple-modal").show().animate({opacity: 1, top: "50%"}, 200);
-                });
-            });
-
-            $(".simple-modal .modal-close, .simple-modal + .overlay").on("click", function() {
-                $(".simple-modal").animate({opacity: 0, top: "45%"}, 200, function() {
-                    $(this).hide();
-                    $(".simple-modal + .overlay").fadeOut(400);
-                });
+            $("#edit-modal .btn-confirm").on("click", function() {
+                var newPerm = $("#edit-modal .permissions option:checked").val();
+                getInfoByStatus(
+                    "../controllers/work_with_users.php",
+                    {status: 3, userID: userID, permissions: newPerm},
+                    function(response) {
+                        $(".user-wrapper .permissions-label").text(setUserPerm(Number(newPerm)));
+                        $("#edit-modal .close").click();
+                    }
+                );
             });
 
             // status
@@ -293,18 +296,38 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-md-offset-3 col-md-9 col-lg-offset-3 col-lg-7 user-wrapper">
+            <div class="col-xs-12 col-md-offset-3 col-md-9 col-lg-offset-3 col-lg-6 user-wrapper">
                 <div class="user-full-name">
-                    <h2></h2>
-                    <span class="label label-warning permissions-label"></span>
-                    <div class="edit-permissions">
-                        <img src="http://a0077628.xsph.ru/manage_courses_and_users/images/edit.png">
-                    </div>
+                    <h2><span class="label label-warning permissions-label"></span></h2>
+                    <button type="button" class="btn btn-default edit-permissions" data-toggle="modal" data-target="#edit-modal">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </button>
                 </div>
-                <div id="this-user-permissions"></div>
             </div>
         </div>
-   </div>
+    </div>
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Назначение прав</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="edit-form">
+                        <div class="form-group">
+                            <select class="form-control permissions">
+                                <option value="1">Студент</option>
+                                <option value="2">Преподаватель</option>
+                                <option value="3">Администратор</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-success btn-confirm">Подтвердить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">

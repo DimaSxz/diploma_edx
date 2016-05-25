@@ -19,22 +19,22 @@
 
   }
 
-  function changePermissions($userId, $permissions) {
+  function changePermissions($userID, $permissions) {
     switch($permissions) {
       case "1":
         mysql_query("UPDATE `auth_user`
                      SET `is_staff` = 0, `is_superuser` = 0
-                     WHERE `id` = '$userId'") or die(mysql_error());
+                     WHERE `id` = '$userID'") or die(mysql_error());
         break;
       case "2":
         mysql_query("UPDATE `auth_user`
                      SET `is_staff` = 1, `is_superuser` = 0
-                     WHERE `id` = '$userId'") or die(mysql_error());
+                     WHERE `id` = '$userID'") or die(mysql_error());
         break;
       case "3":
         mysql_query("UPDATE `auth_user`
                      SET `is_staff` = 1, `is_superuser` = 1
-                     WHERE `id` = '$userId'") or die(mysql_error());
+                     WHERE `id` = '$userID'") or die(mysql_error());
         break;
     }
     return "good";
@@ -52,10 +52,10 @@
         $data = json_encode(getNames($_POST["name"]));
         break;
     case 2:
-        $data = json_encode(getInfoById($_POST["userId"]));
+        $data = json_encode(getInfoById($_POST["userID"]));
         break;
     case 3:
-        $data = json_encode(changePermissions($_POST["userId"], $_POST["permissions"]));
+        $data = json_encode(changePermissions($_POST["userID"], $_POST["permissions"]));
         break;
     case 4:
         $data = json_encode(getUserPerm($_POST["username"]));

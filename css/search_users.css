@@ -1,3 +1,7 @@
+.btn {
+    outline: none !important;
+}
+
 .search-wrapper input.search-users {
     font-size: 14px;
 }
@@ -61,18 +65,25 @@
     display: inline-block;
 }
 
-.user-wrapper .permissions-label-bs {
-    vertical-align: super;
+.user-wrapper .permissions-label {
+    vertical-align: middle;
+    font-size: 14px;
     margin-left: 15px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 .user-wrapper .edit-permissions {
     display: none;
     margin-left: 8px;
-    cursor: pointer;
 }
 
-.user-wrapper .edit-permissions img {
-    height: 20px;
-    width: 20px;
+#edit-modal .edit-form {
+    text-align: center;
+}
+
+#edit-modal .edit-form .form-group {
+  margin-bottom: 15px;
 }
