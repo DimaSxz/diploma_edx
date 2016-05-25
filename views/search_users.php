@@ -59,6 +59,13 @@
 
             $("#panel-default-manage-courses div:nth-child(2) div:nth-child(2) a").click();
 
+            $(document).on("click", function(e) {
+              var target = $(e.target);
+              if (!target.is("input.search-users") && !target.is("p.title")) {
+                $(".names-wrapper").hide();
+              }
+            });
+
             $(".search-wrapper input.search-users").on("focus", function() {
                 //дописать условие
                 if ($(this).val() != "") {
@@ -66,6 +73,7 @@
                 }
             });
 
+            //вывод найденных пользователей в блок names
             $(".search-wrapper input.search-users").on("input", function() {
                 var name = $(this).val().trim();
                 if (name.length >= 3) {
@@ -74,9 +82,63 @@
                         {status: 1, name: name},
                         function(response) {
                             response = JSON.parse(response);
+                            var namesStaffs = "";
+                            var namesStudents = "";
+                            $.each(response, function(key, val) {
+                                if (val.is_staff == "0" && val.is_superuser == "0") {
+                                    namesStudents += "<p><a class='link-student link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
+                                } else if (val.is_staff == "1") {
+                                    namesStaffs += "<p><a class='link-staff link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
+                                }
+                            });
+                            if (namesStaffs == "") {
+                                namesStaffs += "<p class='no-results'>Нет результатов</p>";
+                            }
+                            if (namesStudents == "") {
+                                namesStudents += "<p class='no-results'>Нет результатов</p>";
+                            }
+                            namesStaffs = "<p class='title'>Преподаватели</p>" + namesStaffs;
+                            namesStudents = "<p class='title'>Студенты</p>" + namesStudents;
+                            $(".search-wrapper .names-wrapper").show();
+                            $(".search-wrapper .names-wrapper .names").html(namesStaffs + namesStudents);
                         }
                     );
                 }
+            });
+
+            //вывод информации о выбранном пользователе
+            $(".search-wrapper .names-wrapper").on("click", "p:not(.title)", function() {
+              userID = ($(this).children(".link-user").attr("id")).split("-")[2];
+              var userPermNum; //номер прав пользователя
+              if ($(this).children(".link-user").hasClass("link-student")) {
+                userPerm = setUserPerm(1);
+                userPermNum = "1";
+              } else if ($(this).children(".link-user").hasClass("link-staff")) {
+                userPerm = setUserPerm(2);
+                userPermNum = "2";
+              } else {
+                userPerm = setUserPerm(3);
+                userPermNum = "3";
+              }
+              var fullName = $(this).children(".link-user").text();
+              $(".user-wrapper").show();
+              $(".user-wrapper .user-full-name h2").text(fullName);
+              $(".user-wrapper .permissions-label-bs").text(userPerm);
+              $(".simple-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
+            });
+
+            $(".user-wrapper .edit-permissions").on("click", function() {
+                event.preventDefault();
+                $(".simple-modal + .overlay").fadeIn(400, function() {
+                    $(".simple-modal").show().animate({opacity: 1, top: "50%"}, 200);
+                });
+            });
+
+            $(".simple-modal .modal-close, .simple-modal + .overlay").on("click", function() {
+                $(".simple-modal").animate({opacity: 0, top: "45%"}, 200, function() {
+                    $(this).hide();
+                    $(".simple-modal + .overlay").fadeOut(400);
+                });
             });
 
             // status
@@ -90,6 +152,17 @@
             		data,
             		success
             	);
+            }
+
+            function setUserPerm(perm) {
+              switch(perm) {
+                case 1:
+                  return "студент";
+                case 2:
+                  return "преподаватель";
+                case 3:
+                  return "администратор";
+              }
             }
 
         });
@@ -213,14 +286,23 @@
                     <form class="search-users-form">
                         <input type="text" class="form-control search-users" autocomplete="off" placeholder='Поиск...'>
                         <div class="row names-wrapper">
-                          <div class="names">
+                          <div class="names"></div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-md-offset-3 col-md-9 col-lg-offset-3 col-lg-7 user-info-wrapper"></div>
+            <div class="col-xs-12 col-md-offset-3 col-md-9 col-lg-offset-3 col-lg-7 user-wrapper">
+                <div class="user-full-name">
+                    <h2></h2>
+                    <span class="label label-warning permissions-label"></span>
+                    <div class="edit-permissions">
+                        <img src="http://a0077628.xsph.ru/manage_courses_and_users/images/edit.png">
+                    </div>
+                </div>
+                <div id="this-user-permissions"></div>
+            </div>
         </div>
    </div>
 </body>
