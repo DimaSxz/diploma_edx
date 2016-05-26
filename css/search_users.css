@@ -79,7 +79,13 @@
     margin-left: 8px;
 }
 
-#edit-modal .edit-form {
+.user-wrapper .delete-user {
+    display: none;
+    margin-left: 8px;
+    color: #a94442;
+}
+
+.modal .modal-body {
     text-align: center;
 }
 
