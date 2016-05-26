@@ -83,7 +83,7 @@
             $(".search-wrapper input.search-users").on("input", function() {
                 var name = $(this).val().trim();
                 if (name.length >= 3) {
-                    getInfoByStatus(
+                    doSomethingByStatus(
                         "../controllers/work_with_users.php",
                         {status: 1, name: name},
                         function(response) {
@@ -117,30 +117,40 @@
                 userID = ($(this).children(".link-user").attr("id")).split("-")[2];
                 if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>") {
                     $(".user-wrapper .edit-permissions").show();
+                    $(".user-wrapper .delete-user").show();
                 }
                 var userPermNum; //номер прав пользователя
-                if ($(this).children(".link-user").hasClass("link-student")) {
-                    userPerm = setUserPerm(1);
-                    userPermNum = "1";
+                if ($(this).children(".link-user").hasClass("link-admin")) {
+                    userPerm = setUserPerm(3);
+                    userPermNum = "3";
                 } else if ($(this).children(".link-user").hasClass("link-staff")) {
                     userPerm = setUserPerm(2);
                     userPermNum = "2";
                 } else {
-                    userPerm = setUserPerm(3);
-                    userPermNum = "3";
+                    userPerm = setUserPerm(1);
+                    userPermNum = "1";
                 }
                 var fullName = $(this).children(".link-user").text();
                 $(".user-wrapper .user-full-name h2").text(fullName);
                 $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label label-" + userID + "'></span>");
                 $(".user-wrapper .permissions-label").text(userPerm);
                 $("#edit-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
+                $("#delete-user-modal p").text("Вы уверены, что хотите удалить данные о пользователе: " + fullName + "?");
+                doSomethingByStatus(
+                    "../controllers/work_with_users.php",
+                    {status: 3, userID: userID, permissions: userPermNum},
+                    function(response) {
+                        response = JSON.parse(response);
+                        console.log(response);
+                    }
+                );
             });
 
-            $("#edit-modal .btn-confirm").on("click", function() {
+            $("#btn-confirm-perm").on("click", function() {
                 var newPerm = $("#edit-modal .permissions option:checked").val();
-                getInfoByStatus(
+                doSomethingByStatus(
                     "../controllers/work_with_users.php",
-                    {status: 3, userID: userID, permissions: newPerm},
+                    {status: 2, userID: userID, permissions: newPerm},
                     function(response) {
                         $(".user-wrapper .permissions-label").text(setUserPerm(Number(newPerm)));
                         $("#edit-modal .close").click();
@@ -148,12 +158,22 @@
                 );
             });
 
+            $("#btn-confirm-delete").on("click", function() {
+                doSomethingByStatus(
+                    "../controllers/work_with_users.php",
+                    {status: 4, userID: userID},
+                    function(response) {
+                        console.log(response);
+                    }
+                );
+            });
+
             // status
             // 1 - получить информацию для поиска о пользователях с совпадающим именем из БД
-            // 2 - получить информацию для вывода о пользователях с совпадающим именем из БД
-            // 3 - изменить права пользователя
-            // 4 - получить права текущего пользователя
-            function getInfoByStatus(url, data, success) {
+            // 2 - изменить права пользователя
+            // 3 -
+            // 4 - удалить данные о пользователе
+            function doSomethingByStatus(url, data, success) {
             	$.post(
             		url,
             		data,
@@ -316,6 +336,9 @@
                     <button type="button" class="btn btn-default edit-permissions" data-toggle="modal" data-target="#edit-modal">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </button>
+                    <button type="button" class="btn btn-default delete-user" data-toggle="modal" data-target="#delete-user-modal">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -336,8 +359,22 @@
                                 <option value="3">Администратор</option>
                             </select>
                         </div>
-                        <button type="button" class="btn btn-success btn-confirm">Подтвердить</button>
+                        <button type="button" class="btn btn-success btn-confirm" id="btn-confirm-perm">Подтвердить</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-user-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Удаление данных пользователя</h4>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                    <button type="button" class="btn btn-danger btn-confirm" id="btn-confirm-delete">Подтвердить</button>
                 </div>
             </div>
         </div>
