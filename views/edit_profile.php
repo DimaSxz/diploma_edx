@@ -29,7 +29,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Панель администрирования openEDX</title>
+    <title>Модуль администрирования Open edX</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script src="../js/jquery-2.1.4.js"></script>
@@ -361,9 +361,18 @@
                           </h4>
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
-                          <div class="panel-body">
-                            Просмотр статистики по курсу
-                          </div>
+							<div class="panel-body">
+								<a href="../index.php?action=ratingOfAllUsers">Общий рейтинг пользователей</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=studentsRating">Рейтинг студентов по группам и курсам</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=complexity">Анализ сложности частей курсов</a>
+							</div>
                         </div>
                       </div>
                     </div>

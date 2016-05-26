@@ -274,9 +274,18 @@
                           </h4>
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
-                          <div class="panel-body">
-                            Просмотр статистики по курсу
-                          </div>
+							<div class="panel-body">
+								<a href="../index.php?action=ratingOfAllUsers">Общий рейтинг пользователей</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=studentsRating">Рейтинг студентов по группам и курсам</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=complexity">Анализ сложности частей курсов</a>
+							</div>
                         </div>
                       </div>
                     </div>

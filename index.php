@@ -53,6 +53,18 @@ switch($action)
     case "search_users":
         header("Location: views/search_users.php");
         break;
+	case "ratingOfAllUsers":
+		header("Location: views/rating.php");
+		break;
+	case "studentsRating":
+		header("Location: views/rating.php?mode=students");
+		break;
+	case "courseRating":
+		header("Location: views/rating.php?mode=courses");
+		break;
+	case "complexity":
+		header("Location: views/complexity.php");
+		break;
     default:
         echo "404 ERROR! Page not found...<br>";
         break;

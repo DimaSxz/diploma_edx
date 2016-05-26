@@ -1,0 +1,23 @@
+.btn-thumbnail{
+	text-align: center;
+	white-space: normal;
+	color: rgba(25, 70, 186, 0.9);
+	border-color: rgba(25, 70, 186, 0.25);
+	border-width: 2px;
+	border-radius: 15px;
+	transition: all .4s ease 0s;
+}
+
+.btn-thumbnail:hover{
+	color: rgba(25, 70, 186, 0.9);
+	border-color: rgb(236, 11, 67) !important;
+	transition: all .4s ease 0s;
+}
+.btn-thumbnail .glyphicon{
+	transition: all .4s ease 0s;
+}
+
+.btn-thumbnail:hover .glyphicon{
+	color: rgb(236, 11, 67);
+	transition: all .4s ease 0s;
+}
