@@ -31,11 +31,18 @@
 
     <script>
         $(function() {
-            var userID;
+            var userID = "<?=$_SESSION["id"]?>";
+            var userPermNum; //номер прав пользователя
+            var courses = ""; //верстка курсов
 
             $(".user-wrapper .user-full-name h2").text("<?=$_SESSION['name']?>");
             $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label'></span>");
             $(".user-wrapper .permissions-label").text(setUserPermByFlags("<?=$_SESSION['is_staff']?>", "<?=$_SESSION['is_superuser']?>"));
+            doSomethingByStatus(
+                "../controllers/work_with_users.php",
+                {status: 3, userID: userID, permissions: userPermNum},
+                successThree
+            );
 
             $(".main.container-fluid .row").css("opacity","0");
             $(".main.container-fluid .row").animate({opacity: "1"}, 555);
@@ -88,25 +95,32 @@
                         {status: 1, name: name},
                         function(response) {
                             response = JSON.parse(response);
+                            var namesAdmins = "";
                             var namesStaffs = "";
                             var namesStudents = "";
                             $.each(response, function(key, val) {
-                                if (val.is_staff == "0" && val.is_superuser == "0") {
-                                    namesStudents += "<p><a class='link-student link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
+                                if (val.is_superuser == "1") {
+                                    namesAdmins += "<p><a class='link-admin link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
                                 } else if (val.is_staff == "1") {
                                     namesStaffs += "<p><a class='link-staff link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
+                                } else {
+                                    namesStudents += "<p><a class='link-student link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
                                 }
                             });
+                            if (namesAdmins == "") {
+                                namesAdmins += "<p class='no-results'>Нет результатов</p>";
+                            }
                             if (namesStaffs == "") {
                                 namesStaffs += "<p class='no-results'>Нет результатов</p>";
                             }
                             if (namesStudents == "") {
                                 namesStudents += "<p class='no-results'>Нет результатов</p>";
                             }
+                            namesAdmins = "<p class='title'>Администраторы</p>" + namesAdmins;
                             namesStaffs = "<p class='title'>Преподаватели</p>" + namesStaffs;
                             namesStudents = "<p class='title'>Студенты</p>" + namesStudents;
                             $(".search-wrapper .names-wrapper").show();
-                            $(".search-wrapper .names-wrapper .names").html(namesStaffs + namesStudents);
+                            $(".search-wrapper .names-wrapper .names").html(namesAdmins + namesStaffs + namesStudents);
                         }
                     );
                 }
@@ -115,20 +129,17 @@
             //вывод информации о выбранном пользователе
             $(".search-wrapper .names-wrapper").on("click", "p:not(.title)", function() {
                 userID = ($(this).children(".link-user").attr("id")).split("-")[2];
-                if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>") {
+                courses = "";
+                if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>" && !$(this).children(".link-user").hasClass("link-admin")) {
                     $(".user-wrapper .edit-permissions").show();
                     $(".user-wrapper .delete-user").show();
                 }
-                var userPermNum; //номер прав пользователя
                 if ($(this).children(".link-user").hasClass("link-admin")) {
                     userPerm = setUserPerm(3);
-                    userPermNum = "3";
                 } else if ($(this).children(".link-user").hasClass("link-staff")) {
                     userPerm = setUserPerm(2);
-                    userPermNum = "2";
                 } else {
                     userPerm = setUserPerm(1);
-                    userPermNum = "1";
                 }
                 var fullName = $(this).children(".link-user").text();
                 $(".user-wrapper .user-full-name h2").text(fullName);
@@ -139,10 +150,7 @@
                 doSomethingByStatus(
                     "../controllers/work_with_users.php",
                     {status: 3, userID: userID, permissions: userPermNum},
-                    function(response) {
-                        response = JSON.parse(response);
-                        console.log(response);
-                    }
+                    successThree
                 );
             });
 
@@ -171,7 +179,7 @@
             // status
             // 1 - получить информацию для поиска о пользователях с совпадающим именем из БД
             // 2 - изменить права пользователя
-            // 3 -
+            // 3 - получить информацию о курсах студента/преподавателя
             // 4 - удалить данные о пользователе
             function doSomethingByStatus(url, data, success) {
             	$.post(
@@ -181,24 +189,118 @@
             	);
             }
 
+            function successThree(response) {
+                response = JSON.parse(response);
+                console.log(response);
+                var courseName;
+                var courseOrg;
+                var noCourses;
+                if (response[0] == 0) {
+                    $.each(response, function(key, val) {
+                        if (key != 0) {
+
+                            courseName = (val.course_id).split(":")[1];
+                            if (courseName != undefined) {
+                                courseName = courseName.split("+")[1];
+                            } else {
+                                courseName = val.course_id;
+                            }
+
+                            if (val.org == undefined) {
+                                courseOrg = ""
+                            } else {
+                                courseOrg = " <span class='label label-primary'>" + val.org + "</span>";
+                            }
+
+                            if (val.download_url != null) {
+                                courseCertificate = val.download_url;
+                            } else {
+                                courseCertificate = "не получен";
+                            }
+
+                            courses += "<div class='panel panel-default'>" +
+                                            "<div class='panel-heading' role='tab' id='heading'" + key + ">" +
+                                                "<h3 class='panel-title'>" +
+                                                    courseName + courseOrg +
+                                                    "<a class='btn-more-info' role='button' data-toggle='collapse' data-parent='#accordion-user-courses' href='#collapse" + key + "'>" +
+                                                        "<span class='glyphicon glyphicon-plus'></span>" +
+                                                    "</a>" +
+                                                "</h3>" +
+                                            "</div>" +
+                                            "<div id='collapse" + key + "' class='panel-collapse collapse' role='tabpanel' aria-labeledby='heading" + key + "'>" +
+                                                "<div class='panel-body'>" +
+                                                    "<p class='created-date'>" +
+                                                        "<b>Дата подписки:</b> " + val.created +
+                                                    "</p>" +
+                                                    "<p>" +
+                                                        "<b>Сертификат: </b> " +
+                                                        courseCertificate +
+                                                    "</p>" +
+                                                "</div>" +
+                                            "</div>" +
+                                       "</div>";
+                        }
+                        noCourses = "Подписки на курсы отcутствуют";
+                    });
+                } else {
+                    $.each(response, function(key, val) {
+                        if (key != 0) {
+                            courses += "<div class='panel panel-default'>" +
+                                            "<div class='panel-heading' role='tab' id='heading'" + key + ">" +
+                                                "<h3 class='panel-title'>" +
+                                                    ((val.course_id).split(":")[1]).split("+")[1] +
+                                                    " <span class='label label-primary'>" + val.org + "</span>" +
+                                                    "<a class='btn-more-info' role='button' data-toggle='collapse' data-parent='#accordion-user-courses' href='#collapse" + key + "'>" +
+                                                        "<span class='glyphicon glyphicon-plus'></span>" +
+                                                    "</a>" +
+                                                "</h3>" +
+                                            "</div>" +
+                                            "<div id='collapse" + key + "' class='panel-collapse collapse' role='tabpanel' aria-labeledby='heading" + key + "'>" +
+                                                "<div class='panel-body'>" +
+                                                    "<p class='created-date'>" +
+                                                        "<b>Дата создания:</b> " + val.created +
+                                                    "</p>" +
+                                                    "<p>" +
+                                                        "<b>Описание:</b> " +
+                                                    "</p>" +
+                                                "</div>" +
+                                            "</div>" +
+                                       "</div>";
+                        }
+                        noCourses = "Ни один курс еще не был создан";
+                    });
+                }
+                if (courses == "") {
+                    $(".user-wrapper .user-courses").html("<div class='well well-lg no-courses'>" +
+                                                              noCourses +
+                                                          "</div>");
+                } else {
+                    $(".user-wrapper .user-courses").html(courses);
+                }
+
+            }
+
             function setUserPerm(perm) {
               switch(perm) {
                 case 1:
-                  return "студент";
+                    userPermNum = "1";
+                    return "студент";
                 case 2:
-                  return "преподаватель";
+                    userPermNum = "2";
+                    return "преподаватель";
                 case 3:
-                  return "администратор";
+                    userPermNum = "3";
+                    return "администратор";
               }
             }
 
             function setUserPermByFlags(is_staff, is_superuser) {
-                if (is_staff == "0" && is_superuser == "0") {
-                    return setUserPerm(1);
+                if (is_superuser == "1") {
+                    return setUserPerm(3);
                 } else if (is_staff == "1") {
                     return setUserPerm(2);
                 } else {
-                    return setUserPerm(3);
+                    return setUserPerm(1);
                 }
             }
 
@@ -349,6 +451,7 @@
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
+                <div class="user-courses panel-group" role="tablist" aria-multiselectable="true"></div>
             </div>
         </div>
     </div>

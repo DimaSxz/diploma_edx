@@ -44,24 +44,35 @@
     }
 
     function getCourses($userID, $permissions) {
-        $arrCourses = array();
+        $arrCourses = array(0 => 0);
         switch ($permissions) {
             case "1":
-                $select = mysql_query("SELECT `course_id`, `is_active`, `created`
-                                       FROM `student_courseenrollment`
-                                       WHERE `user_id` = '$userID'
-                                       AND `is_active` = '1'") or die(mysql_error());
+                $select = mysql_query("SELECT `a`.`course_id`, `a`.`created`, `b`.`org`, `c`.`download_url`
+                                       FROM `student_courseenrollment` AS `a`
+                                       LEFT JOIN `student_courseaccessrole` AS `b`
+                                       ON `a`.`course_id` = `b`.`course_id`
+                                       LEFT JOIN `certificates_generatedcertificate` AS `c`
+                                       ON `a`.`course_id` = `c`.`course_id`
+                                       WHERE `a`.`user_id` = '$userID'
+                                       AND `a`.`is_active` = '1'") or die(mysql_error());
                 while ($result = mysql_fetch_assoc($select)) {
                     $arrCourses[] = $result;
                     $date = new DateTime($result["created"]);
                     $arrCourses[count($arrCourses)-1]["created"] = $date -> format("d.m.Y");
                 }
                 break;
-            case "2":
-                $select = mysql_query("SELECT `course_id`, `is_active`, `created`
-                                       FROM `student_courseenrollment`
-                                       WHERE `user_id` = '$userID'
-                                       AND `is_active` = '1'") or die(mysql_error());
+            default:
+                $arrCourses[0] = 1;
+                $select = mysql_query("SELECT DISTINCT `a`.`course_id`, `a`.`org`, `b`.`created`
+                                       FROM `student_courseaccessrole` AS `a`
+                                       LEFT JOIN `course_structures_coursestructure` AS `b`
+                                       ON `a`.`course_id` = `b`.`course_id`
+                                       WHERE `a`.`user_id` = '$userID'") or die(mysql_error());
+                while ($result = mysql_fetch_assoc($select)) {
+                    $arrCourses[] = $result;
+                    $date = new DateTime($result["created"]);
+                    $arrCourses[count($arrCourses)-1]["created"] = $date -> format("d.m.Y");
+                }
         }
         return $arrCourses;
     }
