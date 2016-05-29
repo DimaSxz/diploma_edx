@@ -494,8 +494,14 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
                           <div class="panel-body">
-                            <a href="../index.php?action=stats">Просмотр статистики по курсу</a>
-                          </div>
+								<a href="../index.php?action=userRating">Рейтинг пользователей</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
+							</div>
+							<div class="panel-body">
+								<a href="../index.php?action=complexity">Анализ сложности частей курсов</a>
+							</div>
                         </div>
                       </div>
                     </div>

@@ -144,14 +144,121 @@
                 </li>
            </ul>
         </div>
-        <div class="row">
-        	<div class="col-xs-12 col-md-offset-2 col-md-10 col-lg-8">
+		<section class="row" id="content">
+			<div class="col-xs-12 col-lg-offset-1 col-lg-9">
 				<div class="row">
-					<p>Просмотр сгенерированных по 10-бальной шкале оценок сложности частей курсов на основе результатов студентов</p>
+					<h1 class="page-header text-center">Рейтинг курсов</h1>
 				</div>
-        	</div>
-        </div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-3" style="float: right;">
+						<button class="btn btn-primary filter-btn visible-xs col-xs-5">
+							<span class="glyphicon glyphicon-filter"></span>
+							Фильтры
+						</button>
+						<div class="hidden-xs col-xs-offset-1 col-xs-6 col-sm-offset-0 col-sm-12 filter-wrapper">
+							<p class="text-center page-header">Фильтр</p>
+							<div class="radio">
+								<label for="allTime">
+									<input type="radio" id="allTime" value="allTime" name="period" checked>
+									За всё время
+								</label>
+							</div>
+							<div class="radio">
+								<label for="year">
+									<input type="radio" id="year" value="year" name="period">
+									За год
+								</label>
+							</div>
+							<div class="radio">
+								<label for="month">
+									<input type="radio" id="month" value="month" name="period">
+									За месяц
+								</label>
+							</div>
+							<div class="radio">
+								<label for="week">
+									<input type="radio" id="week" value="week" name="period">
+									За неделю
+								</label>
+							</div>
+							<div class="radio">
+								<label for="today">
+									<input type="radio" id="today" value="today" name="period">
+									За сутки
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-9">
+						<table id="rating" class="table-hover table-condensed table-responsive">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Название</th>
+									<th><span class="hidden-xs">Активных пользователей</span><span class="visible-xs">Активных</span></th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
     </div>
+    <script>
+		$(function() {
+            $('.main.container-fluid .row').css('opacity','0');
+            $('.main.container-fluid .row').animate({opacity: "1"}, 555);
+            setTimeout(function() {
+                $('a#manage-stats-a.left-menu-a-main').click();    
+            }, 350);
+            
+            $('.left-menu-a-main').on('click', function() {
+                var panel = "#"+$("#"+$(this).attr("id")).parents(".panel-default").attr("id");
+                if ($(panel).hasClass("clicked")) {
+                    $(panel).removeClass("clicked");
+                    $(panel).addClass("unclicked");
+                } else {
+                    $(".panel-default").removeClass("clicked");
+                    $(".panel-default").addClass("unclicked");
+                    $(panel).removeClass("unclicked");
+                    $(panel).addClass("clicked");
+                }
+            })
+			
+            $('.navbar-toggle').on('click', function() {
+                $(this).toggleClass('active');
+            })
+            $('.row').on('click', function() {
+                if($('.main').hasClass('canvas-slid')) {
+                    $('.navbar-toggle').removeClass('active');
+                }
+            })
+			
+			/*Functions*/
+			getRating();
+			
+			$('.filter-wrapper input').on('click',function(){
+				getRating();
+			})
+			
+			$('.filter-btn').on('click',function(){
+				$('.filter-wrapper').toggleClass('hidden-xs');
+			})
+		})
+		
+		function getRating(){
+			$.post('../controllers/getRating.php',
+					{
+						'mode':'courses',
+						'period':$('input[name=period]:checked').val()
+					},
+					function(response){
+						$('#rating > tbody').html(JSON.parse(response));
+					}
+				);
+		}
+	</script>
 </body>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">

@@ -124,10 +124,7 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
 							<div class="panel-body">
-								<a href="../index.php?action=ratingOfAllUsers">Общий рейтинг пользователей</a>
-							</div>
-							<div class="panel-body">
-								<a href="../index.php?action=studentsRating">Рейтинг студентов по группам и курсам</a>
+								<a href="../index.php?action=userRating">Рейтинг пользователей</a>
 							</div>
 							<div class="panel-body">
 								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
@@ -147,21 +144,118 @@
                 </li>
            </ul>
         </div>
-        <div class="row">
-        	<div class="col-xs-12">
-        		<div class="filter">
-        			
-        		</div>
-        	</div>
-        </div>
-        <div class="row">
-        	<div class="col-xs-12 col-md-offset-2 col-md-10 col-lg-8">
+		<section class="row" id="content">
+			<div class="col-xs-12 col-lg-offset-1 col-lg-9">
 				<div class="row">
-					
+					<h1 class="page-header text-center">Рейтинг пользователей</h1>
 				</div>
-        	</div>
-        </div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-3" style="float: right;">
+						<button class="btn btn-primary filter-btn visible-xs col-xs-5">
+							<span class="glyphicon glyphicon-filter"></span>
+							Фильтры
+						</button>
+						<div class="hidden-xs col-xs-offset-1 col-xs-6 col-sm-offset-0 col-sm-12 filter-wrapper">
+							<p class="text-center page-header">Фильтр</p>
+							<div class="checkbox">
+								<label for="only-students">
+									<input name="students" type="checkbox" id="only-students">
+									Только студенты
+								</label>
+							</div>
+							<p class="text-center page-header">Сортировка</p>
+							<div class="radio">
+								<label for="regular">
+									<input type="radio" id="regular" value="regular" name="sort" checked>
+									Общая
+								</label>
+							</div>
+							<div class="radio">
+								<label for="activity">
+									<input type="radio" id="activity" value="activity" name="sort">
+									По активности
+								</label>
+							</div>
+							<div class="radio">
+								<label for="performance">
+									<input type="radio" id="performance" value="performance" name="sort">
+									По успеваемости
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-9">
+						<table id="rating" class="table-hover table-condensed table-responsive">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>ФИО</th>
+									<th>Курс обучения</th>
+									<th>Группа</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
     </div>
+    <script>
+		$(function() {
+            $('.main.container-fluid .row').css('opacity','0');
+            $('.main.container-fluid .row').animate({opacity: "1"}, 555);
+            setTimeout(function() {
+                $('a#manage-stats-a.left-menu-a-main').click();    
+            }, 350);
+            
+            $('.left-menu-a-main').on('click', function() {
+                var panel = "#"+$("#"+$(this).attr("id")).parents(".panel-default").attr("id");
+                if ($(panel).hasClass("clicked")) {
+                    $(panel).removeClass("clicked");
+                    $(panel).addClass("unclicked");
+                } else {
+                    $(".panel-default").removeClass("clicked");
+                    $(".panel-default").addClass("unclicked");
+                    $(panel).removeClass("unclicked");
+                    $(panel).addClass("clicked");
+                }
+            })
+			
+            $('.navbar-toggle').on('click', function() {
+                $(this).toggleClass('active');
+            })
+            $('.row').on('click', function() {
+                if($('.main').hasClass('canvas-slid')) {
+                    $('.navbar-toggle').removeClass('active');
+                }
+            })
+			
+			/*Functions*/
+			getRating();
+			
+			$('.filter-wrapper input').on('click',function(){
+				getRating();
+			})
+			
+			$('.filter-btn').on('click',function(){
+				$('.filter-wrapper').toggleClass('hidden-xs');
+			})
+		})
+		
+		function getRating(){
+			$.post('../controllers/getRating.php',
+					{
+						'mode':'users',
+						'only-students':$('#only-students').prop('checked')? 1 : 0,
+						'sort':$('input[name=sort]:checked').val()
+					},
+					function(response){
+						$('#rating > tbody').html(JSON.parse(response));
+					}
+				);
+		}
+	</script>
 </body>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="Cache-Control" content="no-cache">

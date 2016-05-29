@@ -1,23 +1,46 @@
-.btn-thumbnail{
+
+.page-header {
+	margin: 0;
+	font-size: 24px;
+}
+
+@media (min-width: 992px) {
+	section#content {
+		margin-left: 235px;
+		padding: 0px 15px;
+	}
+}
+
+table#rating {
+	width: 100%;
 	text-align: center;
-	white-space: normal;
-	color: rgba(25, 70, 186, 0.9);
-	border-color: rgba(25, 70, 186, 0.25);
-	border-width: 2px;
-	border-radius: 15px;
-	transition: all .4s ease 0s;
 }
 
-.btn-thumbnail:hover{
-	color: rgba(25, 70, 186, 0.9);
-	border-color: rgb(236, 11, 67) !important;
-	transition: all .4s ease 0s;
-}
-.btn-thumbnail .glyphicon{
-	transition: all .4s ease 0s;
+.filter-wrapper {
+	padding: 10px 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-bottom: 20px;
 }
 
-.btn-thumbnail:hover .glyphicon{
+.filter-btn {
+	background-color: rgb(25, 70, 186);
+	margin-bottom: 20px;
+}
+
+.filter-btn:hover{
+	background-color: rgba(25, 70, 186,0.9);
+}
+
+.filter-btn:active, .filter-btn:focus, .filter-btn:active:focus{
+	background-color: rgb(25, 70, 186);
+	outline: none;
+}
+.filter-btn:active:focus{
 	color: rgb(236, 11, 67);
-	transition: all .4s ease 0s;
+	-webkit-box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
+	-ms-box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
+	-o-box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
 }

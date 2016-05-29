@@ -31,18 +31,11 @@
 
     <script>
         $(function() {
-            var userID = "<?=$_SESSION["id"]?>";
-            var userPermNum; //номер прав пользователя
-            var courses = ""; //верстка курсов
+            var userID;
 
             $(".user-wrapper .user-full-name h2").text("<?=$_SESSION['name']?>");
             $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label'></span>");
             $(".user-wrapper .permissions-label").text(setUserPermByFlags("<?=$_SESSION['is_staff']?>", "<?=$_SESSION['is_superuser']?>"));
-            doSomethingByStatus(
-                "../controllers/work_with_users.php",
-                {status: 3, userID: userID, permissions: userPermNum},
-                successThree
-            );
 
             $(".main.container-fluid .row").css("opacity","0");
             $(".main.container-fluid .row").animate({opacity: "1"}, 555);
@@ -90,37 +83,30 @@
             $(".search-wrapper input.search-users").on("input", function() {
                 var name = $(this).val().trim();
                 if (name.length >= 3) {
-                    doSomethingByStatus(
+                    getInfoByStatus(
                         "../controllers/work_with_users.php",
                         {status: 1, name: name},
                         function(response) {
                             response = JSON.parse(response);
-                            var namesAdmins = "";
                             var namesStaffs = "";
                             var namesStudents = "";
                             $.each(response, function(key, val) {
-                                if (val.is_superuser == "1") {
-                                    namesAdmins += "<p><a class='link-admin link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
+                                if (val.is_staff == "0" && val.is_superuser == "0") {
+                                    namesStudents += "<p><a class='link-student link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
                                 } else if (val.is_staff == "1") {
                                     namesStaffs += "<p><a class='link-staff link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
-                                } else {
-                                    namesStudents += "<p><a class='link-student link-user' id='link-user-" + val.user_id + "'>" + val.name + "</a></p>";
                                 }
                             });
-                            if (namesAdmins == "") {
-                                namesAdmins += "<p class='no-results'>Нет результатов</p>";
-                            }
                             if (namesStaffs == "") {
                                 namesStaffs += "<p class='no-results'>Нет результатов</p>";
                             }
                             if (namesStudents == "") {
                                 namesStudents += "<p class='no-results'>Нет результатов</p>";
                             }
-                            namesAdmins = "<p class='title'>Администраторы</p>" + namesAdmins;
                             namesStaffs = "<p class='title'>Преподаватели</p>" + namesStaffs;
                             namesStudents = "<p class='title'>Студенты</p>" + namesStudents;
                             $(".search-wrapper .names-wrapper").show();
-                            $(".search-wrapper .names-wrapper .names").html(namesAdmins + namesStaffs + namesStudents);
+                            $(".search-wrapper .names-wrapper .names").html(namesStaffs + namesStudents);
                         }
                     );
                 }
@@ -129,36 +115,32 @@
             //вывод информации о выбранном пользователе
             $(".search-wrapper .names-wrapper").on("click", "p:not(.title)", function() {
                 userID = ($(this).children(".link-user").attr("id")).split("-")[2];
-                courses = "";
-                if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>" && !$(this).children(".link-user").hasClass("link-admin")) {
+                if ("<?=$_SESSION['is_superuser']?>" == "1" && userID != "<?=$_SESSION['id']?>") {
                     $(".user-wrapper .edit-permissions").show();
-                    $(".user-wrapper .delete-user").show();
                 }
-                if ($(this).children(".link-user").hasClass("link-admin")) {
-                    userPerm = setUserPerm(3);
+                var userPermNum; //номер прав пользователя
+                if ($(this).children(".link-user").hasClass("link-student")) {
+                    userPerm = setUserPerm(1);
+                    userPermNum = "1";
                 } else if ($(this).children(".link-user").hasClass("link-staff")) {
                     userPerm = setUserPerm(2);
+                    userPermNum = "2";
                 } else {
-                    userPerm = setUserPerm(1);
+                    userPerm = setUserPerm(3);
+                    userPermNum = "3";
                 }
                 var fullName = $(this).children(".link-user").text();
                 $(".user-wrapper .user-full-name h2").text(fullName);
                 $(".user-wrapper .user-full-name h2").append("<span class='label label-warning permissions-label label-" + userID + "'></span>");
                 $(".user-wrapper .permissions-label").text(userPerm);
                 $("#edit-modal .permissions option[value=" + userPermNum + "]").prop("selected", true);
-                $("#delete-user-modal p").text("Вы уверены, что хотите удалить данные о пользователе: " + fullName + "?");
-                doSomethingByStatus(
-                    "../controllers/work_with_users.php",
-                    {status: 3, userID: userID, permissions: userPermNum},
-                    successThree
-                );
             });
 
-            $("#btn-confirm-perm").on("click", function() {
+            $("#edit-modal .btn-confirm").on("click", function() {
                 var newPerm = $("#edit-modal .permissions option:checked").val();
-                doSomethingByStatus(
+                getInfoByStatus(
                     "../controllers/work_with_users.php",
-                    {status: 2, userID: userID, permissions: newPerm},
+                    {status: 3, userID: userID, permissions: newPerm},
                     function(response) {
                         $(".user-wrapper .permissions-label").text(setUserPerm(Number(newPerm)));
                         $("#edit-modal .close").click();
@@ -166,22 +148,12 @@
                 );
             });
 
-            $("#btn-confirm-delete").on("click", function() {
-                doSomethingByStatus(
-                    "../controllers/work_with_users.php",
-                    {status: 4, userID: userID},
-                    function(response) {
-                        console.log(response);
-                    }
-                );
-            });
-
             // status
             // 1 - получить информацию для поиска о пользователях с совпадающим именем из БД
-            // 2 - изменить права пользователя
-            // 3 - получить информацию о курсах студента/преподавателя
-            // 4 - удалить данные о пользователе
-            function doSomethingByStatus(url, data, success) {
+            // 2 - получить информацию для вывода о пользователях с совпадающим именем из БД
+            // 3 - изменить права пользователя
+            // 4 - получить права текущего пользователя
+            function getInfoByStatus(url, data, success) {
             	$.post(
             		url,
             		data,
@@ -189,118 +161,24 @@
             	);
             }
 
-            function successThree(response) {
-                response = JSON.parse(response);
-                console.log(response);
-                var courseName;
-                var courseOrg;
-                var noCourses;
-                if (response[0] == 0) {
-                    $.each(response, function(key, val) {
-                        if (key != 0) {
-
-                            courseName = (val.course_id).split(":")[1];
-                            if (courseName != undefined) {
-                                courseName = courseName.split("+")[1];
-                            } else {
-                                courseName = val.course_id;
-                            }
-
-                            if (val.org == undefined) {
-                                courseOrg = ""
-                            } else {
-                                courseOrg = " <span class='label label-primary'>" + val.org + "</span>";
-                            }
-
-                            if (val.download_url != null) {
-                                courseCertificate = val.download_url;
-                            } else {
-                                courseCertificate = "не получен";
-                            }
-
-                            courses += "<div class='panel panel-default'>" +
-                                            "<div class='panel-heading' role='tab' id='heading'" + key + ">" +
-                                                "<h3 class='panel-title'>" +
-                                                    courseName + courseOrg +
-                                                    "<a class='btn-more-info' role='button' data-toggle='collapse' data-parent='#accordion-user-courses' href='#collapse" + key + "'>" +
-                                                        "<span class='glyphicon glyphicon-plus'></span>" +
-                                                    "</a>" +
-                                                "</h3>" +
-                                            "</div>" +
-                                            "<div id='collapse" + key + "' class='panel-collapse collapse' role='tabpanel' aria-labeledby='heading" + key + "'>" +
-                                                "<div class='panel-body'>" +
-                                                    "<p class='created-date'>" +
-                                                        "<b>Дата подписки:</b> " + val.created +
-                                                    "</p>" +
-                                                    "<p>" +
-                                                        "<b>Сертификат: </b> " +
-                                                        courseCertificate +
-                                                    "</p>" +
-                                                "</div>" +
-                                            "</div>" +
-                                       "</div>";
-                        }
-                        noCourses = "Подписки на курсы отcутствуют";
-                    });
-                } else {
-                    $.each(response, function(key, val) {
-                        if (key != 0) {
-                            courses += "<div class='panel panel-default'>" +
-                                            "<div class='panel-heading' role='tab' id='heading'" + key + ">" +
-                                                "<h3 class='panel-title'>" +
-                                                    ((val.course_id).split(":")[1]).split("+")[1] +
-                                                    " <span class='label label-primary'>" + val.org + "</span>" +
-                                                    "<a class='btn-more-info' role='button' data-toggle='collapse' data-parent='#accordion-user-courses' href='#collapse" + key + "'>" +
-                                                        "<span class='glyphicon glyphicon-plus'></span>" +
-                                                    "</a>" +
-                                                "</h3>" +
-                                            "</div>" +
-                                            "<div id='collapse" + key + "' class='panel-collapse collapse' role='tabpanel' aria-labeledby='heading" + key + "'>" +
-                                                "<div class='panel-body'>" +
-                                                    "<p class='created-date'>" +
-                                                        "<b>Дата создания:</b> " + val.created +
-                                                    "</p>" +
-                                                    "<p>" +
-                                                        "<b>Описание:</b> " +
-                                                    "</p>" +
-                                                "</div>" +
-                                            "</div>" +
-                                       "</div>";
-                        }
-                        noCourses = "Ни один курс еще не был создан";
-                    });
-                }
-                if (courses == "") {
-                    $(".user-wrapper .user-courses").html("<div class='well well-lg no-courses'>" +
-                                                              noCourses +
-                                                          "</div>");
-                } else {
-                    $(".user-wrapper .user-courses").html(courses);
-                }
-
-            }
-
             function setUserPerm(perm) {
               switch(perm) {
                 case 1:
-                    userPermNum = "1";
-                    return "студент";
+                  return "студент";
                 case 2:
-                    userPermNum = "2";
-                    return "преподаватель";
+                  return "преподаватель";
                 case 3:
-                    userPermNum = "3";
-                    return "администратор";
+                  return "администратор";
               }
             }
 
             function setUserPermByFlags(is_staff, is_superuser) {
-                if (is_superuser == "1") {
-                    return setUserPerm(3);
+                if (is_staff == "0" && is_superuser == "0") {
+                    return setUserPerm(1);
                 } else if (is_staff == "1") {
                     return setUserPerm(2);
                 } else {
-                    return setUserPerm(1);
+                    return setUserPerm(3);
                 }
             }
 
@@ -405,10 +283,7 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
 							<div class="panel-body">
-								<a href="../index.php?action=ratingOfAllUsers">Общий рейтинг пользователей</a>
-							</div>
-							<div class="panel-body">
-								<a href="../index.php?action=studentsRating">Рейтинг студентов по группам и курсам</a>
+								<a href="../index.php?action=userRating">Рейтинг пользователей</a>
 							</div>
 							<div class="panel-body">
 								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
@@ -447,11 +322,7 @@
                     <button type="button" class="btn btn-default edit-permissions" data-toggle="modal" data-target="#edit-modal">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-default delete-user" data-toggle="modal" data-target="#delete-user-modal">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
                 </div>
-                <div class="user-courses panel-group" role="tablist" aria-multiselectable="true"></div>
             </div>
         </div>
     </div>
@@ -471,22 +342,8 @@
                                 <option value="3">Администратор</option>
                             </select>
                         </div>
-                        <button type="button" class="btn btn-success btn-confirm" id="btn-confirm-perm">Подтвердить</button>
+                        <button type="button" class="btn btn-success btn-confirm">Подтвердить</button>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="delete-user-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Удаление данных пользователя</h4>
-                </div>
-                <div class="modal-body">
-                    <p></p>
-                    <button type="button" class="btn btn-danger btn-confirm" id="btn-confirm-delete">Подтвердить</button>
                 </div>
             </div>
         </div>

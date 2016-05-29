@@ -53,14 +53,11 @@ switch($action)
     case "search_users":
         header("Location: views/search_users.php");
         break;
-	case "ratingOfAllUsers":
-		header("Location: views/rating.php");
-		break;
-	case "studentsRating":
-		header("Location: views/rating.php?mode=students");
+	case "userRating":
+		header("Location: views/students_rating.php");
 		break;
 	case "courseRating":
-		header("Location: views/rating.php?mode=courses");
+		header("Location: views/courses_rating.php");
 		break;
 	case "complexity":
 		header("Location: views/complexity.php");

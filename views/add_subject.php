@@ -219,10 +219,7 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false">
 							<div class="panel-body">
-								<a href="../index.php?action=ratingOfAllUsers">Общий рейтинг пользователей</a>
-							</div>
-							<div class="panel-body">
-								<a href="../index.php?action=studentsRating">Рейтинг студентов по группам и курсам</a>
+								<a href="../index.php?action=userRating">Рейтинг пользователей</a>
 							</div>
 							<div class="panel-body">
 								<a href="../index.php?action=courseRating">Рейтинг курсов</a>
