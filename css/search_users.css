@@ -1,3 +1,8 @@
+* {
+	-webkit-transition: all 0.4s ease 0s;
+			transition: all 0.4s ease 0s;
+}
+
 .btn {
     outline: none !important;
 }
@@ -84,5 +89,29 @@
 }
 
 #edit-modal .edit-form .form-group {
-  margin-bottom: 15px;
+  	margin-bottom: 15px;
+}
+
+
+.user-wrapper .panel-heading {
+    background-color: #fff;
+}
+ 
+.user-wrapper .btn-more-info {
+    float: right;
+}
+ 
+.user-wrapper .btn-more-info[aria-expanded="false"] span {
+    font-size: 18px;
+}
+ 
+.user-wrapper .btn-more-info[aria-expanded="true"] span {
+    font-size: 18px;
+    color: rgb(226, 11, 67);
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+}
+ 
+.user-wrapper .no-courses {
+    text-align: center;
 }
