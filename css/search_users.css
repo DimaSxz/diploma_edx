@@ -88,6 +88,16 @@
     text-align: center;
 }
 
+.user-wrapper .delete-user {
+    display: none;
+    margin-left: 8px;
+    color: rgb(226, 11, 67);
+}
+
+.modal .modal-body {
+    text-align: center;
+}
+
 #edit-modal .edit-form .form-group {
   	margin-bottom: 15px;
 }
@@ -96,22 +106,22 @@
 .user-wrapper .panel-heading {
     background-color: #fff;
 }
- 
+
 .user-wrapper .btn-more-info {
     float: right;
 }
- 
+
 .user-wrapper .btn-more-info[aria-expanded="false"] span {
     font-size: 18px;
 }
- 
+
 .user-wrapper .btn-more-info[aria-expanded="true"] span {
     font-size: 18px;
     color: rgb(226, 11, 67);
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
 }
- 
+
 .user-wrapper .no-courses {
     text-align: center;
 }
