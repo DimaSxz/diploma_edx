@@ -200,6 +200,7 @@
 							</thead>
 							<tbody></tbody>
 						</table>
+						<p class="text-center" style="display: none;">За выбранный период популярных курсов нету.</p>
 					</div>
 				</div>
 			</div>
@@ -254,7 +255,12 @@
 						'period':$('input[name=period]:checked').val()
 					},
 					function(response){
-						$('#rating > tbody').html(JSON.parse(response));
+						response=JSON.parse(response);
+						console.log(response);
+						if(response != '')
+							$('#rating > tbody').html(response).parent().show().next('p').hide();
+						else
+							$("#rating").hide().next('p').show();
 					}
 				);
 		}
