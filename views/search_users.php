@@ -213,7 +213,7 @@
                             }
 
                             if (val.download_url != null) {
-                                courseCertificate = val.download_url;
+                                courseCertificate = "<a href='" + val.download_url + "'>ссылка</a>";
                             } else {
                                 courseCertificate = "не получен";
                             }
