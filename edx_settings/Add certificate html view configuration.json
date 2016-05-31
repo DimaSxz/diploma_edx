@@ -1,0 +1,20 @@
+{
+	"default": {
+		"accomplishment_class_append": "accomplishment-certificate",
+		"platform_name": "ФСПО Университета ИТМО",
+		"logo_src": "https://upload.wikimedia.org/wikipedia/ru/3/36/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_%D0%A3%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%82%D0%B5%D1%82%D0%B0_%D0%98%D0%A2%D0%9C%D0%9E.png",
+		"logo_url": "http://fspo.ifmo.ru",
+		"company_about_url": "https://new.vk.com/dimasxz",
+		"company_privacy_url": "https://new.vk.com/aromanov",
+		"company_tos_url": "https://new.vk.com/sotnikov97",
+		"company_verified_certificate_url": "ifmo.ru"
+	},
+	"verified": {
+		"certificate_type": "Verified",
+		"certificate_title": "Verified Certificate of Achievement"
+	},
+	"honor": {
+		"certificate_type": "Honor Code",
+		"certificate_title": "Certificate of Achievement"
+	}
+}
