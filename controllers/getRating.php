@@ -61,9 +61,15 @@ function coursesRating($data){
 	$answer="";
 	$i = 1;
 	while($row = mysql_fetch_assoc($result)){
+		$title = explode(':', $row['course_id']);
+		if(isset($title[1])){
+			$title = explode('+', $title[1]);
+			$title = isset($title[1]) ? $title[1] : $row['course_id'];
+		}
+		else $title = $row['course_id'];
 		$answer .= "<tr>
 						<th scope='row'>$i</th>
-						<td>$row[course_id]</td>
+						<td>$title</td>
 						<td>$row[count]</td>
 					</tr>";
 		$i++;
