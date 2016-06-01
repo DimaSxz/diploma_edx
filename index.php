@@ -53,6 +53,9 @@ switch($action)
     case "search_users":
         header("Location: views/search_users.php");
         break;
+    case "edit_courses":
+        header("Location: views/edit_courses.php");
+        break;
 	case "userRating":
 		header("Location: views/students_rating.php");
 		break;

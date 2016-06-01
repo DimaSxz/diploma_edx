@@ -65,7 +65,7 @@
 }
 
 .user-wrapper h2 {
-    font-size: 26px;
+    font-size: 24px;
     display: inline-block;
 }
 
@@ -79,18 +79,25 @@
             user-select: none;
 }
 
+.user-wrapper .user-full-name .btn {
+    margin-left: 4px;
+}
+
 .user-wrapper .edit-permissions {
     display: none;
-    margin-left: 8px;
 }
 
 #edit-modal .edit-form {
     text-align: center;
 }
 
+.user-wrapper .appoint-course {
+    display: none;
+    color: #3c763d;
+}
+
 .user-wrapper .delete-user {
     display: none;
-    margin-left: 8px;
     color: rgb(226, 11, 67);
 }
 
@@ -98,20 +105,27 @@
     text-align: center;
 }
 
+.modal .close {
+    outline: none;
+}
+
 #edit-modal .edit-form .form-group {
   	margin-bottom: 15px;
 }
 
-
 .user-wrapper .panel-heading {
     background-color: #fff;
+}
+
+.user-wrapper .panel-title {
+    line-height: 2;
 }
 
 .user-wrapper .btn-more-info {
     float: right;
 }
 
-.user-wrapper .btn-more-info[aria-expanded="false"] span {
+.user-wrapper .btn-more-info span {
     font-size: 18px;
 }
 
@@ -124,4 +138,8 @@
 
 .user-wrapper .no-courses {
     text-align: center;
+}
+
+#appoint-course-modal .appoint-course-form {
+    display: none;
 }

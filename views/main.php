@@ -7,6 +7,16 @@
     {
         header("Location: ../index.php?action=logout");
     }
+    $select = mysql_query("SELECT DISTINCT `course_id`
+                           FROM `student_courseaccessrole`
+                           WHERE `course_id`
+                           NOT IN (SELECT `course_id` FROM `fspo_courseinfo`)
+                           AND `user_id` = '$_SESSION[id]'") or die(mysql_error());
+    while ($result = mysql_fetch_assoc($select)) {
+        mysql_query("INSERT INTO `fspo_courseinfo` (`course_id`, `staffs`)
+                     VALUES ('$result[course_id]', '$_SESSION[name]')") or die(mysql_error());
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +39,7 @@
 
     <script>
         $(function() {
+
             $('.main.container-fluid .row').css('opacity','0');
             $('.main.container-fluid .row').animate({opacity: "1"}, 555);
 
@@ -162,13 +173,6 @@
                 );
             });
         });
-//            $('.new-notification .glyphicon-remove').on('click', function() {
-//                var notify = $(this).parents('.list-group-item');
-//                notify.animate({ opacity: "0" }, 500);
-//                setTimeout(function() {
-//                    notify.css('display', 'none');
-//                }, 500);
-//            })
     </script>
     <style>
         .modal-create-course .form-horizontal .row {
@@ -241,13 +245,7 @@
                                     <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
                                 </div>
                                 <div class="panel-body">
-                                    <a href="../index.php?action=add_subject">Добавить дисциплину</a>
-                                </div>
-                                <div class="panel-body">
-                                    Назначить преподавателя
-                                </div>
-                                <div class="panel-body">
-                                    Назначить бонусы
+                                    <a href="../index.php?action=edit_courses">Редактировать курсы</a>
                                 </div>
                             </div>
                         </div>
@@ -317,68 +315,6 @@
                         </script>
                        </ul>
                    </div>
-<!--
-                   <div class="hidden-xs xsm-vision col-xsm-8 col-sm-8">
-                       <div class="thumbnail notes-block">
-                           <div class="caption">
-                               <h4 class="notifications">Уведомления</h4>
-                               <ul class="list-group text-left">
-                                  <li class="list-group-item">
-                                       <div class="new-notification">
-                                           <div class="row note-title">
-                                              <div class="col-xs-11">
-                                               <p><a href="#">@DimaSxz</a> <small>в комментариях к курсу "Название курса"</small></p>
-                                              </div>
-                                              <div class="col-xs-1">
-                                                  <a class="pull-right glyphicon glyphicon-remove"></a>
-                                              </div>
-                                           </div>
-                                           <div class="row note-main">
-                                              <div class="col-xs-12">
-                                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi inventore voluptates voluptate quidem, dicta facere saepe eos deserunt eaque hic, eius accusamus soluta. Odit provident, et assumenda dicta commodi sapiente quae, unde expedita error repellendus consectetur obcaecati quo at atque ipsa quisquam. Quas in quam ut quod voluptatibus iure nostrum impedit labore quidem tempore optio molestias, temporibus doloribus aperiam iste quia ipsam magni repellendus natus a. Repellendus quae optio facere, dolores nobis obcaecati ab magni officiis id tenetur saepe, quisquam facilis aliquam, tempore aut nihil nisi adipisci repellat ea assumenda. Ea amet id explicabo eveniet iure, minima cumque pariatur architecto non voluptates eaque vitae ipsa fuga soluta eos, et, harum tenetur magni animi repellat facilis blanditiis rerum incidunt repudiandae. Ipsum alias quasi voluptatibus animi cum dolorum, debitis earum aspernatur nemo dolor est doloribus tempora sequi repudiandae iure excepturi, corporis necessitatibus numquam ut vel recusandae in accusamus. Nam similique debitis, laudantium hic accusantium. Fuga dignissimos repudiandae debitis repellendus odit. Deleniti illo, dolores soluta alias quas consequatur, velit fugit sint reprehenderit quam voluptatem, pariatur non consectetur quaerat debitis tempore? Expedita, itaque cumque quam similique velit eaque porro. Dolorum obcaecati ad fugit quisquam nulla, voluptatum qui eos reprehenderit voluptates pariatur fugiat quidem praesentium omnis, possimus sapiente reiciendis aperiam quam itaque nihil illo est quis deserunt exercitationem magni! Repellendus dolor provident non deleniti accusamus, voluptatum obcaecati blanditiis nisi, veniam itaque a totam possimus, quaerat laboriosam. Officia esse sit dolores velit, sed id, quis suscipit commodi non, modi nam sapiente officiis reprehenderit reiciendis molestias inventore minus qui corporis consequatur blanditiis.</p>
-                                              </div>
-                                           </div>
-                                       </div>
-                                   </li>
-                                   <li class="list-group-item">
-                                       <div class="new-notification">
-                                           <div class="row note-title">
-                                              <div class="col-xs-11">
-                                               <p><a href="#">@stnkvld</a> <small>в комментариях к курсу "Название курса"</small></p>
-                                              </div>
-                                              <div class="col-xs-1">
-                                                  <a class="pull-right glyphicon glyphicon-remove"></a>
-                                              </div>
-                                           </div>
-                                           <div class="row note-main">
-                                              <div class="col-xs-12">
-                                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est!</p>
-                                              </div>
-                                           </div>
-                                       </div>
-                                   </li>
-                                   <li class="list-group-item">
-                                       <div class="new-notification">
-                                           <div class="row note-title">
-                                              <div class="col-xs-11">
-                                               <p><small>Анонимно в комментариях к курсу "Название курса"</small></p>
-                                              </div>
-                                              <div class="col-xs-1">
-                                                  <a class="pull-right glyphicon glyphicon-remove"></a>
-                                              </div>
-                                           </div>
-                                           <div class="row note-main">
-                                              <div class="col-xs-12">
-                                               <p>Отличный курс! :)</p>
-                                              </div>
-                                           </div>
-                                       </div>
-                                   </li>
-                               </ul>
-                           </div>
-                       </div>
-                   </div>
--->
                 </div>
                 <div class="row text-center" id="three-last-courses">
                     <script>

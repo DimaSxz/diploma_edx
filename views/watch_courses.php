@@ -12,7 +12,7 @@
         $user_id = $_SESSION['id'];
         $result = mysql_query("SELECT id, full_title FROM subjects JOIN user_subjects ON id = subject_id WHERE user_id = '$user_id'") or die(mysql_error());
         $subjects = "";
-        
+
         if (mysql_num_rows($result) > 0) {
             while ($options = mysql_fetch_assoc($result)) {
                 $subjects .= "<option value=" . $options['id'] . ">" . $options['full_title'] . "</option>";
@@ -20,7 +20,7 @@
         } else {
                 $subjects .= "<option>Вам требуется добавить дисциплины</option>";
         }
-        
+
         return $subjects;
     }
 
@@ -31,8 +31,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Модуль администрирования Open edX</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script src="../js/jquery-2.1.4.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/bootstrap.js"></script>
@@ -49,17 +49,17 @@
         var setValStart;
         var setValEnd;
         var edit_course_id;
-        
+
         function getAllSubjectsForWatch() {
             $.post(
                 "../controllers/getAllSubjectsForWatch.php",
                 {},
                 function(responce) {
                     $('.main').append(responce);
-                        
+
                     $('.main.container-fluid .row').css('opacity','0');
                     $('.main.container-fluid .row').animate({opacity: "1"}, 555);
-                        
+
                     $('.navmenu .left-menu-a-main').on('click', function() {
                         var panel = "#"+$("#"+$(this).attr("id")).parents(".panel-default").attr("id");
                         if ($(panel).hasClass("clicked")) {
@@ -72,9 +72,9 @@
                             $(panel).addClass("clicked");
                         }
                     })
-            
-                    $("[data-toggle='tooltip']").tooltip(); 
-                        
+
+                    $("[data-toggle='tooltip']").tooltip();
+
                     $('.navmenu .navbar-toggle').on('click', function() {
                         $(this).toggleClass('active');
                     });
@@ -84,11 +84,11 @@
                             $('.navmenu .navbar-toggle').removeClass('active');
                         }
                     });
-            
+
                     $('.navmenu .navmenu-brand').on('click', function() {
-                        $('.main.container-fluid').css('display', 'none');                           
+                        $('.main.container-fluid').css('display', 'none');
                     });
-            
+
                     $('.main .row #delete-btn').on('click', function() {
                         var check = $('form').serializeArray();
                         if (!$.isEmptyObject(check)) {
@@ -97,7 +97,7 @@
                                 {checkArray: check},
                                 function(responce) {
                                     if (responce == 1) {
-                                        $('input:checked').parents('form').parent('.row').css('display', 'none');   
+                                        $('input:checked').parents('form').parent('.row').css('display', 'none');
                                     } else {
                                         $('.main .navbar-form').parent('.col-lg-7').parent('.row').css('display', 'none');
                                         $('input:checked').parents('form').parent('.row').css('display', 'none');
@@ -109,16 +109,16 @@
                     });
 
                     $('#menu-checks li:first-child').on('click', function() {
-                        $('input[type=checkbox]').prop('checked','true'); 
+                        $('input[type=checkbox]').prop('checked','true');
                     });
 
                     $('#menu-checks li:last-child').on('click', function() {
-                        $('input[type=checkbox]').removeAttr('checked'); 
+                        $('input[type=checkbox]').removeAttr('checked');
                     });
 
                 });
         }
-        
+
         function inspectCourseTitle(result) {
             if (result == 'empty') {
                 $('#create_course_title').parent('div').addClass('has-error has-feedback');
@@ -138,7 +138,7 @@
         }
 
         setTimeout(function() {
-                $('a#manage-courses-a.left-menu-a-main').click();    
+                $('a#manage-courses-a.left-menu-a-main').click();
         }, 350);
 
         $(document).ready(function() {
@@ -178,7 +178,7 @@
                 }
             });
 
-            $('#create-btn').on('click', function() {                
+            $('#create-btn').on('click', function() {
                 var create_course_title = $('#create_course_title').val();
                 var create_start_date = $('#create_start_date input[type=text]').val();
                 var create_end_date = $('#create_end_date input[type=text]').val();
@@ -211,10 +211,10 @@
                     }
                 );
             });
-            
-            getAllSubjectsForWatch(); 
+
+            getAllSubjectsForWatch();
         });
-        
+
         $(document).on('click', '.collapse .btn-warning', function() {
             edit_course_id = $(this).prop('value');
             $.post(
@@ -224,7 +224,7 @@
                     responce = JSON.parse(responce);
                     setValStart = responce['start_date'];
                     setValEnd = responce['end_date'];
-                    
+
                     $(function () {
                         $("#edit_start_date").datetimepicker({
                             locale: 'ru',
@@ -235,16 +235,16 @@
                             defaultDate: setValEnd
                         });
                     });
-                    
+
                     $('#edit_course_title').prop('placeholder', responce['title']);
                     $('.modal-edit-course select#edit_subjects option[value=' + responce['subject_id'] + ']').prop('selected', 'true');
                     $('#edit_description').prop('placeholder', responce['description']);
                 }
             );
-            
+
             $('.modal-edit-course').modal('show');
         });
-        
+
         $(document).on('click', '#edit-save-btn', function() {
             var change_title = $('#edit_course_title').val();
             var change_start_date = $('#edit_start_date input[type=text]').val();
@@ -259,9 +259,9 @@
                     $('.row.navmenu-for-subjects').remove();
                     getAllSubjectsForWatch();
                 }
-            ); 
+            );
         });
-            
+
     </script>
 </head>
 <body>
@@ -456,18 +456,12 @@
                           </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                          <div class="panel-body">
-                            <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
-                          </div>
-                          <div class="panel-body">
-                            <a href="../index.php?action=add_subject">Добавить дисциплину</a>
-                          </div>
-                          <div class="panel-body">
-                            Назначить преподавателя
-                          </div>
-                          <div class="panel-body">
-                            Назначить бонусы
-                          </div>
+                            <div class="panel-body">
+                                <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
+                            </div>
+                            <div class="panel-body">
+                                <a href="../index.php?action=edit_courses">Редактировать курсы</a>
+                            </div>
                         </div>
                       </div>
                       <div class="panel panel-default unclicked" id="panel-default-manage-certificates">

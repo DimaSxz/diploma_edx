@@ -90,13 +90,7 @@
                                     <a href="../index.php?action=watch_courses">Просмотреть курсы</a>
                                 </div>
                                 <div class="panel-body">
-                                    <a href="../index.php?action=add_subject">Добавить дисциплину</a>
-                                </div>
-                                <div class="panel-body">
-                                    Назначить преподавателя
-                                </div>
-                                <div class="panel-body">
-                                    Назначить бонусы
+                                    <a href="../index.php?action=edit_courses">Редактировать курсы</a>
                                 </div>
                             </div>
                         </div>
@@ -206,9 +200,9 @@
             $('.main.container-fluid .row').css('opacity','0');
             $('.main.container-fluid .row').animate({opacity: "1"}, 555);
             setTimeout(function() {
-                $('a#manage-stats-a.left-menu-a-main').click();    
+                $('a#manage-stats-a.left-menu-a-main').click();
             }, 350);
-            
+
             $('.left-menu-a-main').on('click', function() {
                 var panel = "#"+$("#"+$(this).attr("id")).parents(".panel-default").attr("id");
                 if ($(panel).hasClass("clicked")) {
@@ -221,7 +215,7 @@
                     $(panel).addClass("clicked");
                 }
             })
-			
+
             $('.navbar-toggle').on('click', function() {
                 $(this).toggleClass('active');
             })
@@ -230,19 +224,19 @@
                     $('.navbar-toggle').removeClass('active');
                 }
             })
-			
+
 			/*Functions*/
 			getRating();
-			
+
 			$('.filter-wrapper input').on('click',function(){
 				getRating();
 			})
-			
+
 			$('.filter-btn').on('click',function(){
 				$('.filter-wrapper').toggleClass('hidden-xs');
 			})
 		})
-		
+
 		function getRating(){
 			$.post('../controllers/getRating.php',
 					{

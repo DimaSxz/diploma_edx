@@ -1,5 +1,6 @@
 <?php
     require_once("db.php");
+
     function getNames($name) {
         $arrNames = array();
         $select = mysql_query("SELECT `a`.`user_id`, `a`.`name`, `b`.`is_staff`, `b`.`is_superuser`
@@ -13,6 +14,7 @@
         }
         return $arrNames;
     }
+
     function changePermissions($userID, $permissions) {
         switch($permissions) {
             case "1":
@@ -33,12 +35,14 @@
         }
         return "good";
     }
+
     function getUserPerm($username) {
         $select = mysql_query("SELECT `is_staff`, `is_superuser`
                                FROM `auth_user`
                                WHERE `username` = '$username'") or die(mysql_error());
         return mysql_fetch_assoc($select);
     }
+
     function getCourses($userID, $permissions) {
         $arrCourses = array(0 => 0);
         switch ($permissions) {
@@ -72,6 +76,34 @@
         }
         return $arrCourses;
     }
+
+    function getCoursesForAppoint($sessionID, $userID) {
+        $arrCourses = array();
+        $select = mysql_query("SELECT DISTINCT `course_id`
+                               FROM `student_courseaccessrole`
+                               WHERE `course_id`
+                               NOT IN (SELECT DISTINCT `course_id`
+                                       FROM `student_courseaccessrole`
+                                       WHERE `user_id` = '$userID')
+                               AND `user_id` = '$sessionID'") or die(mysql_error());
+        while ($result = mysql_fetch_assoc($select)) {
+            $arrCourses[] = $result;
+        }
+        return $arrCourses;
+    }
+
+    function appointToCourse($userID, $courseID) {
+        list($courseBegin, $courseBase) = split(":", $courseID);
+        $courseElem = explode("+", $courseBase, 3);
+        mysql_query("INSERT INTO `student_courseaccessrole` (`org`, `course_id`, `role`, `user_id`)
+                     VALUES('$courseElem[0]', '$courseID', 'staff', '$userID')");
+        mysql_query("UPDATE `fspo_courseinfo`
+                     SET `staffs` = CONCAT(`staffs`, CONCAT(', ', (SELECT `name`
+                                                                   FROM `auth_userprofile`
+                                                                   WHERE `user_id` = '$userID')))
+                     WHERE `course_id` = '$courseID'") or die(mysql_error());
+    }
+
     function deleteUserData($userID) {
         mysql_query("DELETE
                      FROM `auth_registration`
@@ -86,6 +118,7 @@
                      FROM `auth_user`
                      WHERE `id` = '$userID'") or die(mysql_error());
     }
+
     switch ($_POST["status"]) {
         case 1:
             echo json_encode(getNames($_POST["name"]));
@@ -98,5 +131,11 @@
             break;
         case 4:
             deleteUserData($_POST["userID"]);
+            break;
+        case 5:
+            echo json_encode(getCoursesForAppoint($_POST["sessionID"], $_POST["userID"]));
+            break;
+        case 6:
+            appointToCourse($_POST["userID"], $_POST["courseID"]);
     }
 ?>

@@ -1,0 +1,72 @@
+* {
+    -webkit-transition: all 0.4s ease 0s;
+			transition: all 0.4s ease 0s;
+}
+
+.btn {
+    outline: none;
+}
+
+.courses-wrapper {
+    margin-top: 40px;
+}
+
+.courses-wrapper .panel-heading {
+    background-color: #fff;
+}
+
+.courses-wrapper .panel-title {
+    line-height: 2;
+}
+
+.courses-wrapper .btn-more-info,
+.courses-wrapper .btn-edit {
+    float: right;
+    margin-left: 10px;
+}
+
+.courses-wrapper .btn-edit {
+    color: #f0ad4e;
+}
+
+.courses-wrapper .btn-more-info span {
+    font-size: 18px;
+}
+
+.courses-wrapper .btn-more-info[aria-expanded="true"] span {
+    font-size: 18px;
+    color: rgb(226, 11, 67);
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+}
+
+.courses-wrapper input[type=checkbox] {
+    margin-top: 20px;;
+    margin-left: 0;
+}
+
+.courses-wrapper .checkbox .panel {
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+.courses-wrapper .manipulation-of-courses {
+    margin-bottom: 20px;
+}
+
+.courses-wrapper .manipulation-of-courses .dropdown {
+    float: left;
+    margin-right: 15px;
+}
+
+#edit-course-modal .modal-body {
+    text-align: center;
+}
+
+#edit-course-modal .form-group {
+    text-align: left;
+}
+
+#edit-course-modal textarea {
+    resize: vertical;
+}
