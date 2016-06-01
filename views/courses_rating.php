@@ -194,7 +194,7 @@
 							</thead>
 							<tbody></tbody>
 						</table>
-						<p class="text-center" style="display: none;">За выбранный период популярных курсов нету.</p>
+						<p class="text-center" style="display: none;">За выбранный период популярных курсов нет.</p>
 					</div>
 				</div>
 			</div>

@@ -44,3 +44,62 @@ table#rating {
 	-o-box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
 	box-shadow: inset 0px 10px 30px 5px rgba(0,0,0,0.5);
 }
+
+h1.page-header > p {
+	margin-top: 15px;
+}
+
+/* Взято из search_users.css */
+.panel-heading {
+    background-color: #fff !important;
+}
+
+.btn-more-info {
+    float: right;
+}
+
+.btn-more-info[aria-expanded="false"] span {
+    font-size: 18px;
+}
+
+.btn-more-info[aria-expanded="true"] span {
+    font-size: 18px;
+    color: rgb(226, 11, 67);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+/* *** */
+.panel-group {
+	margin-bottom: 0;
+}
+
+.panel-body{
+	overflow: hidden;
+	padding: 15px 10px;
+}
+
+.panel-body .panel-body {
+	overflow: auto;
+	padding: 15px 25px;
+}
+
+.panel-body div[id^="chart"] {
+	width: auto;
+	height: auto;
+}
+
+.panel-body div[id^="chart"] svg > text[text-anchor="end"]{
+	display: none !important;
+}
+
+.panel-body .panel-body div[id^="chart"]{
+	margin-left: -20px;
+}
+
+.panel-group .row{
+	margin-bottom: 0;
+}

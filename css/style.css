@@ -3,6 +3,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.btn {
+    outline: none !important;
+}
+
 .header  {
     height: 46px;
     background-color: rgb(25, 70, 186);
