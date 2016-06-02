@@ -4,7 +4,7 @@
 
     require_once('db.php');
 
-    $result = mysql_query("SELECT `auth_user`.`id`, `username`, `name`, `password`, `is_staff`, `is_superuser` FROM `auth_user` INNER JOIN `auth_userprofile` ON `auth_user`.`id` = `auth_userprofile`.`user_id` WHERE `username`='$_POST[login]' AND `username`<>'honor' AND `username`<>'audit' AND `username`<>'verified' AND `username`<>'staff'") or die(mysql_error());
+    $result = mysql_query("SELECT `auth_user`.`id`, `username`, `name`, `password`, `is_staff`, `is_superuser` FROM `auth_user` INNER JOIN `auth_userprofile` ON `auth_user`.`id` = `auth_userprofile`.`user_id` WHERE `username`='$_POST[login]'") or die(mysql_error());
 
     $answer = "good";
 	$pass ='';

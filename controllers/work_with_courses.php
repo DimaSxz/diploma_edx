@@ -11,12 +11,12 @@
     }
 
     function changeInfoCourses($courseID, $serializeVal) {
-        $staffs = ", " . $serializeVal[0]["value"];
+        $staffs = $serializeVal[0]["value"];
         $subject = $serializeVal[1]["value"];
         $terms = $serializeVal[2]["value"];
         $bonuses = $serializeVal[3]["value"];
         mysql_query("UPDATE `fspo_courseinfo`
-                     SET `staffs` = CONCAT(`staffs`, '$staffs'),
+                     SET `staffs` = '$staffs',
                          `subject` = '$subject',
                          `terms` = '$terms',
                          `bonuses` = '$bonuses'

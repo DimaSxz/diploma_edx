@@ -421,6 +421,7 @@
                                     $.each(response, function(key, val) {
                                         coursesForAppoint += "<option value=" + val.course_id + ">" + ((val.course_id).split(":")[1]).split("+")[1] + "</option>";
                                     });
+									$("#appoint-course-modal p.fail-text").text("");
                                     $("#appoint-course-modal .appoint-course-form").show();
                                     $("#appoint-course-modal select.courses").html(coursesForAppoint);
                                 } else {

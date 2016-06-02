@@ -169,6 +169,7 @@
                                                    ON `a`.`course_id` = `c`.`course_id`
                                                    WHERE `a`.`user_id` = '$_SESSION[id]'");
                             $i = 0;
+							$html = "";
                             while ($result = mysql_fetch_assoc($select)) {
                                 list($courseBegin, $courseBase) = split(":", $result["course_id"]);
                                 $courseElem = explode("+", $courseBase, 3);
@@ -180,17 +181,17 @@
                                     $subject = "нет";
                                 }
 
-                                $terms = $result["subject"];
+                                $terms = $result["terms"];
                                 if ($terms == NULL) {
                                     $terms = "нет";
                                 }
 
-                                $bonuses = $result["subject"];
+                                $bonuses = $result["bonuses"];
                                 if ($bonuses == NULL) {
                                     $bonuses = "нет";
                                 }
 
-                                echo "<div class='checkbox'>" .
+                                $html .= "<div class='checkbox'>" .
                                          "<input type='checkbox' name=" . $result["course_id"] . ">" .
                                          "<div class='panel panel-default'>" .
                                             "<div class='panel-heading' role='tab' id='heading'" . $i . ">" .
@@ -228,6 +229,11 @@
                                      "</div>";
                                 $i++;
                             }
+							if($html == ''):?>
+								<div class="well well-lg"><p class="text-center">На данный момент курсов нет</p></div>
+						<?php
+							endif;
+							echo $html;
                         ?>
                     </form>
                 </div>
@@ -245,19 +251,19 @@
                     <form class="edit-courses-form">
                         <div class="form-group">
                             <label for="staffs">Ответственные преподаватели</label>
-                            <textarea class="form-control" name="staffs" rows="4" placeholder="<?=$staffs?>"></textarea>
+                            <textarea class="form-control" name="staffs" rows="4"><?=$staffs?></textarea>
                         </div>
                         <div class="form-group">
                             <label for="subject">Дисциплина</label>
-                            <input type="text" class="form-control" name="subject" placeholder="<?=$subject?>">
+                            <input type="text" class="form-control" name="subject" value="<?=$subject?>">
                         </div>
                         <div class="form-group">
                             <label for="terms">Ключевые термины</label>
-                            <textarea class="form-control" name="terms" rows="4" placeholder="<?=$terms?>"></textarea>
+                            <textarea class="form-control" name="terms" rows="4"><?=$terms?></textarea>
                         </div>
                         <div class="form-group">
                             <label for="bonuses">Бонусы за успешное прохождение</label>
-                            <textarea class="form-control" name="bonuses" rows="4" placeholder="<?=$bonuses?>"></textarea>
+                            <textarea class="form-control" name="bonuses" rows="4"><?=$bonuses?></textarea>
                         </div>
                     </form>
                     <button type="button" class="btn btn-success btn-confirm" id="btn-confirm-edit">Подтвердить</button>
